@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Оферта - Emblema App</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 16mm 22mm 16mm;
+    }
+
+    :root {
+      --primary: #1a365d;
+      --accent: #2b6cb0;
+      --text: #1a202c;
+      --muted: #4a5568;
+      --border: #cbd5e0;
+      --bg-light: #f7fafc;
+      --success: #276749;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.45;
+      color: var(--text);
+      background: #fff;
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 16mm;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+    }
+
+    .header-left h1 {
+      font-size: 22pt;
+      color: var(--primary);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .header-left .subtitle {
+      font-size: 11pt;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    .header-right {
+      text-align: right;
+      font-size: 9.5pt;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .header-right strong { color: var(--text); }
+
+    /* Summary box */
+    .summary-box {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      padding: 14px 18px;
+      margin-bottom: 22px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 24px;
+    }
+
+    .summary-box .total {
+      grid-column: 1 / -1;
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+      margin-top: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .summary-box .total .price {
+      font-size: 16pt;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .summary-item label {
+      font-size: 8.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      display: block;
+    }
+
+    .summary-item span {
+      font-weight: 600;
+      font-size: 11pt;
+    }
+
+    /* Sections */
+    h2 {
+      font-size: 13pt;
+      color: var(--primary);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 5px;
+      margin: 22px 0 12px;
+      page-break-after: avoid;
+    }
+
+    h3 {
+      font-size: 10.5pt;
+      color: var(--accent);
+      margin: 16px 0 8px;
+      page-break-after: avoid;
+    }
+
+    p { margin-bottom: 8px; color: var(--muted); font-size: 10pt; }
+
+    /* Scope tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 14px;
+      font-size: 9.5pt;
+    }
+
+    thead th {
+      background: var(--primary);
+      color: #fff;
+      padding: 7px 8px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 8.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    tbody td {
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    tbody tr:nth-child(even) { background: var(--bg-light); }
+
+    .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .center { text-align: center; }
+
+    /* Checkbox column */
+    .check-col {
+      width: 28px;
+      text-align: center;
+    }
+
+    .checkbox {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 2px;
+      vertical-align: middle;
+    }
+
+    /* Phase subtotal row */
+    .subtotal td {
+      font-weight: 700;
+      background: #edf2f7 !important;
+      border-top: 2px solid var(--border);
+      color: var(--primary);
+    }
+
+    .grand-total td {
+      font-weight: 700;
+      background: var(--primary) !important;
+      color: #fff;
+      font-size: 10.5pt;
+      border: none;
+    }
+
+    /* Phase badge */
+    .phase-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 8pt;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-weight: 600;
+      margin-right: 6px;
+    }
+
+    /* Two columns */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .included { border-left: 3px solid var(--success); padding-left: 10px; }
+    .excluded { border-left: 3px solid #c53030; padding-left: 10px; }
+
+    .included h3, .excluded h3 { margin-top: 0; }
+
+    .included ul, .excluded ul {
+      list-style: none;
+      font-size: 9.5pt;
+    }
+
+    .included li::before { content: "✓ "; color: var(--success); font-weight: 700; }
+    .excluded li::before { content: "✗ "; color: #c53030; font-weight: 700; }
+    .included li, .excluded li { margin-bottom: 3px; }
+
+    /* Notes */
+    .note {
+      background: #fffff0;
+      border: 1px solid #ecc94b;
+      padding: 10px 14px;
+      font-size: 9pt;
+      color: #744210;
+      margin: 12px 0;
+      border-radius: 3px;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 30px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 8.5pt;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .signature-block {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .signature-line {
+      border-top: 1px solid var(--text);
+      padding-top: 6px;
+      font-size: 9pt;
+    }
+
+    /* Print */
+    @media print {
+      body { padding: 0; }
+      .no-print { display: none; }
+      h2 { page-break-before: auto; }
+      table { page-break-inside: avoid; }
+      .phase-section { page-break-inside: avoid; }
+    }
+
+    .print-btn {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 11pt;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .print-btn:hover { background: var(--accent); }
+
+    .methodology-table td:first-child { font-weight: 500; }
+  </style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">📄 Save as PDF</button>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <h1>ОФЕРТА ЗА ИЗРАБОТКА</h1>
+    <div class="subtitle">Emblema - Mobile App + Web Admin + Backend API</div>
+  </div>
+  <div class="header-right">
+    <strong>Дата:</strong> 21.06.2025<br>
+    <strong>Валидност:</strong> 30 дни<br>
+    <strong>Ставка:</strong> 40 € / час (без ДДС)<br>
+    <strong>Метод:</strong> AI-assisted (Cursor + Claude)
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="summary-box">
+  <div class="summary-item">
+    <label>Общо часове</label>
+    <span id="total-hours">1 084 ч.</span>
+  </div>
+  <div class="summary-item">
+    <label>Ставка</label>
+    <span>40 € / час</span>
+  </div>
+  <div class="summary-item">
+    <label>Срок</label>
+    <span>5–7 месеца</span>
+  </div>
+  <div class="summary-item">
+    <label>Платформи</label>
+    <span>iOS · Android · Web</span>
+  </div>
+  <div class="total">
+    <span style="font-size: 11pt; font-weight: 600; color: var(--primary);">Обща офертна стойност (без ДДС)</span>
+    <span class="price" id="total-price">43 360 €</span>
+  </div>
+</div>
+
+<!-- SCOPE -->
+<h2>1. Обхват на проекта</h2>
+
+<div class="two-col">
+  <div class="included">
+    <h3>Включено</h3>
+    <ul>
+      <li>Backend REST API + PostgreSQL</li>
+      <li>Multi-tenancy (множество сгради)</li>
+      <li>Auth + RBAC (4 роли) + 2FA</li>
+      <li>Mobile app - iOS & Android</li>
+      <li>Web Admin (Manager + Central Admin)</li>
+      <li>Новини, Събития, Спорт, Лоялност, Радио</li>
+      <li>Access management + автомобилни номера</li>
+      <li>Push + in-app + email нотификации</li>
+      <li>Audit log + CI/CD + QA + App Store</li>
+      <li>External Smart Home links (не вътрешна интеграция)</li>
+    </ul>
+  </div>
+  <div class="excluded">
+    <h3>Извън обхват</h3>
+    <ul>
+      <li>Smart Home модул (врати, осветление)</li>
+      <li>Домофон в приложението</li>
+      <li>LPR / разпознаване на номера</li>
+      <li>Hikvision / Shelly интеграция</li>
+      <li>Marketplace / плащания</li>
+      <li>Hosting разходи (~50–150 €/мес.)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="note">
+  <strong>Забележка:</strong> Часовете са калибрирани за AI-assisted разработка (Cursor + Claude) - ~30–35% по-бързо от класическо ръчно писане на код. QA, UAT и App Store submission не се намаляват пропорционално.
+</div>
+
+<!-- DETAILED ESTIMATION -->
+<h2>2. Детайлна оценка по задачи</h2>
+<p>Маркирайте включените задачи (☐ → ☑). Часовете и цените се преизчисляват автоматично.</p>
+
+<!-- PHASE 0 -->
+<div class="phase-section">
+<h3><span class="phase-badge">Фаза 0</span> Discovery & Setup</h3>
+<table class="estimate-table" data-phase="0">
+  <thead>
+    <tr>
+      <th class="check-col">✓</th>
+      <th>ID</th>
+      <th>Задача</th>
+      <th class="num">Часове</th>
+      <th class="num">Цена (€)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr data-hours="8"><td class="center"><input type="checkbox" checked></td><td>P0-01</td><td>Архитектурен документ + ER диаграма</td><td class="num hours">8</td><td class="num price">320</td></tr>
+    <tr data-hours="8"><td class="center"><input type="checkbox" checked></td><td>P0-02</td><td>Repo setup, monorepo, linting, conventions</td><td class="num hours">8</td><td class="num price">320</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>P0-03</td><td>CI/CD pipeline (GitHub Actions)</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>P0-04</td><td>Staging + Production environments</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="16"><td class="center"><input type="checkbox" checked></td><td>P0-05</td><td>Design system basics</td><td class="num hours">16</td><td class="num price">640</td></tr>
+    <tr class="subtotal"><td></td><td></td><td>Подtotal Фаза 0</td><td class="num phase-hours">56</td><td class="num phase-price">2 240</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- PHASE 1 -->
+<div class="phase-section">
+<h3><span class="phase-badge">Фаза 1</span> Backend Core & Auth</h3>
+<table class="estimate-table" data-phase="1">
+  <thead>
+    <tr><th class="check-col">✓</th><th>ID</th><th>Задача</th><th class="num">Часове</th><th class="num">Цена (€)</th></tr>
+  </thead>
+  <tbody>
+    <tr data-hours="24"><td class="center"><input type="checkbox" checked></td><td>B-01</td><td>Database schema + migrations</td><td class="num hours">24</td><td class="num price">960</td></tr>
+    <tr data-hours="16"><td class="center"><input type="checkbox" checked></td><td>B-02</td><td>REST API scaffold (NestJS + validation)</td><td class="num hours">16</td><td class="num price">640</td></tr>
+    <tr data-hours="16"><td class="center"><input type="checkbox" checked></td><td>B-03</td><td>JWT auth + refresh tokens</td><td class="num hours">16</td><td class="num price">640</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>B-04</td><td>Registration / Login / Forgot / Reset password</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="20"><td class="center"><input type="checkbox" checked></td><td>B-05</td><td>RBAC - 4 роли (Public, User, Manager, Admin)</td><td class="num hours">20</td><td class="num price">800</td></tr>
+    <tr data-hours="16"><td class="center"><input type="checkbox" checked></td><td>B-06</td><td>Account approval workflow</td><td class="num hours">16</td><td class="num price">640</td></tr>
+    <tr data-hours="8"><td class="center"><input type="checkbox" checked></td><td>B-07</td><td>User profile API</td><td class="num hours">8</td><td class="num price">320</td></tr>
+    <tr data-hours="20"><td class="center"><input type="checkbox" checked></td><td>B-08</td><td>Audit log engine</td><td class="num hours">20</td><td class="num price">800</td></tr>
+    <tr data-hours="8"><td class="center"><input type="checkbox" checked></td><td>B-09</td><td>Rate limiting, CORS, security headers</td><td class="num hours">8</td><td class="num price">320</td></tr>
+    <tr data-hours="16"><td class="center"><input type="checkbox" checked></td><td>B-10</td><td>2FA за Admin & Manager (TOTP)</td><td class="num hours">16</td><td class="num price">640</td></tr>
+    <tr class="subtotal"><td></td><td></td><td>Подtotal Фаза 1</td><td class="num phase-hours">156</td><td class="num phase-price">6 240</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- PHASE 2 -->
+<div class="phase-section">
+<h3><span class="phase-badge">Фаза 2</span> Backend: Сгради, Достъп, Автомобили</h3>
+<table class="estimate-table" data-phase="2">
+  <thead>
+    <tr><th class="check-col">✓</th><th>ID</th><th>Задача</th><th class="num">Часове</th><th class="num">Цена (€)</th></tr>
+  </thead>
+  <tbody>
+    <tr data-hours="24"><td class="center"><input type="checkbox" checked></td><td>B-11</td><td>Building CRUD + структура (входове, гаражи, паркинги, бариери)</td><td class="num hours">24</td><td class="num price">960</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>B-12</td><td>Manager ↔ Building assignment (tenant isolation)</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="28"><td class="center"><input type="checkbox" checked></td><td>B-13</td><td>Access rights - постоянен / период / временен</td><td class="num hours">28</td><td class="num price">1 120</td></tr>
+    <tr data-hours="20"><td class="center"><input type="checkbox" checked></td><td>B-14</td><td>Vehicle plates CRUD + временен достъп + история</td><td class="num hours">20</td><td class="num price">800</td></tr>
+    <tr data-hours="16"><td class="center"><input type="checkbox" checked></td><td>B-15</td><td>Messaging API (building / user / entrance)</td><td class="num hours">16</td><td class="num price">640</td></tr>
+    <tr data-hours="8"><td class="center"><input type="checkbox" checked></td><td>B-16</td><td>External Smart Home link config per entrance</td><td class="num hours">8</td><td class="num price">320</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>B-17</td><td>Media upload (images)</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr class="subtotal"><td></td><td></td><td>Подtotal Фаза 2</td><td class="num phase-hours">120</td><td class="num phase-price">4 800</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- PHASE 3 -->
+<div class="phase-section">
+<h3><span class="phase-badge">Фаза 3</span> Backend: CMS & Публично съдържание</h3>
+<table class="estimate-table" data-phase="3">
+  <thead>
+    <tr><th class="check-col">✓</th><th>ID</th><th>Задача</th><th class="num">Часове</th><th class="num">Цена (€)</th></tr>
+  </thead>
+  <tbody>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>B-18</td><td>News CRUD + categories + publish</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>B-19</td><td>Events CRUD + date filtering</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="16"><td class="center"><input type="checkbox" checked></td><td>B-20</td><td>Loyalty partners CRUD + categories + QR</td><td class="num hours">16</td><td class="num price">640</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>B-21</td><td>Emblema Sport - venues CRUD</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="6"><td class="center"><input type="checkbox" checked></td><td>B-22</td><td>Emblema Radio - stream URL config API</td><td class="num hours">6</td><td class="num price">240</td></tr>
+    <tr data-hours="8"><td class="center"><input type="checkbox" checked></td><td>B-23</td><td>Public API endpoints (без auth)</td><td class="num hours">8</td><td class="num price">320</td></tr>
+    <tr class="subtotal"><td></td><td></td><td>Подtotal Фаза 3</td><td class="num phase-hours">66</td><td class="num phase-price">2 640</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- PHASE 4 -->
+<div class="phase-section">
+<h3><span class="phase-badge">Фаза 4</span> Нотификации</h3>
+<table class="estimate-table" data-phase="4">
+  <thead>
+    <tr><th class="check-col">✓</th><th>ID</th><th>Задача</th><th class="num">Часове</th><th class="num">Цена (€)</th></tr>
+  </thead>
+  <tbody>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>N-01</td><td>Firebase FCM + APNs setup</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="16"><td class="center"><input type="checkbox" checked></td><td>N-02</td><td>Push notification service (triggers, templates)</td><td class="num hours">16</td><td class="num price">640</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>N-03</td><td>In-app notification inbox API</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>N-04</td><td>Email notifications</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="8"><td class="center"><input type="checkbox" checked></td><td>N-05</td><td>Notification preferences</td><td class="num hours">8</td><td class="num price">320</td></tr>
+    <tr class="subtotal"><td></td><td></td><td>Подtotal Фаза 4</td><td class="num phase-hours">60</td><td class="num phase-price">2 400</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- PHASE 5 -->
+<div class="phase-section">
+<h3><span class="phase-badge">Фаза 5</span> Mobile App (React Native - iOS + Android)</h3>
+<table class="estimate-table" data-phase="5">
+  <thead>
+    <tr><th class="check-col">✓</th><th>ID</th><th>Задача</th><th class="num">Часове</th><th class="num">Цена (€)</th></tr>
+  </thead>
+  <tbody>
+    <tr data-hours="24"><td class="center"><input type="checkbox" checked></td><td>M-01</td><td>App shell, navigation, bottom tabs</td><td class="num hours">24</td><td class="num price">960</td></tr>
+    <tr data-hours="16"><td class="center"><input type="checkbox" checked></td><td>M-02</td><td>Auth screens (login, register, forgot password)</td><td class="num hours">16</td><td class="num price">640</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>M-03</td><td>News - list + detail</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>M-04</td><td>Events - list + detail + filter</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>M-05</td><td>Emblema Sport - list + detail</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="20"><td class="center"><input type="checkbox" checked></td><td>M-06</td><td>Loyalty card - partners + categories + QR</td><td class="num hours">20</td><td class="num price">800</td></tr>
+    <tr data-hours="24"><td class="center"><input type="checkbox" checked></td><td>M-07</td><td>Emblema Radio - player + mini player + background</td><td class="num hours">24</td><td class="num price">960</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>M-08</td><td>User profile (view/edit)</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="16"><td class="center"><input type="checkbox" checked></td><td>M-09</td><td>My Access dashboard + Smart Home external links</td><td class="num hours">16</td><td class="num price">640</td></tr>
+    <tr data-hours="10"><td class="center"><input type="checkbox" checked></td><td>M-10</td><td>My Vehicles - list + request add</td><td class="num hours">10</td><td class="num price">400</td></tr>
+    <tr data-hours="14"><td class="center"><input type="checkbox" checked></td><td>M-11</td><td>Messages / Inbox</td><td class="num hours">14</td><td class="num price">560</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>M-12</td><td>Push handling + deep linking</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="8"><td class="center"><input type="checkbox" checked></td><td>M-13</td><td>App icons, splash, store metadata</td><td class="num hours">8</td><td class="num price">320</td></tr>
+    <tr data-hours="16"><td class="center"><input type="checkbox" checked></td><td>M-14</td><td>iOS + Android build, signing, TestFlight</td><td class="num hours">16</td><td class="num price">640</td></tr>
+    <tr class="subtotal"><td></td><td></td><td>Подtotal Фаза 5</td><td class="num phase-hours">208</td><td class="num phase-price">8 320</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- PHASE 6 -->
+<div class="phase-section">
+<h3><span class="phase-badge">Фаза 6</span> Web Admin Panel (Next.js)</h3>
+<table class="estimate-table" data-phase="6">
+  <thead>
+    <tr><th class="check-col">✓</th><th>ID</th><th>Задача</th><th class="num">Часове</th><th class="num">Цена (€)</th></tr>
+  </thead>
+  <tbody>
+    <tr data-hours="20"><td class="center"><input type="checkbox" checked></td><td>W-01</td><td>Admin shell - layout, sidebar, responsive</td><td class="num hours">20</td><td class="num price">800</td></tr>
+    <tr data-hours="20"><td class="center"><input type="checkbox" checked></td><td>W-02</td><td>Manager: User list + invite + remove</td><td class="num hours">20</td><td class="num price">800</td></tr>
+    <tr data-hours="28"><td class="center"><input type="checkbox" checked></td><td>W-03</td><td>Manager: Access management UI</td><td class="num hours">28</td><td class="num price">1 120</td></tr>
+    <tr data-hours="16"><td class="center"><input type="checkbox" checked></td><td>W-04</td><td>Manager: Vehicle plates + history</td><td class="num hours">16</td><td class="num price">640</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>W-05</td><td>Manager: Send messages + push</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>W-06</td><td>Manager: Audit log viewer</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="24"><td class="center"><input type="checkbox" checked></td><td>W-07</td><td>Admin: Building CRUD + structure editor</td><td class="num hours">24</td><td class="num price">960</td></tr>
+    <tr data-hours="10"><td class="center"><input type="checkbox" checked></td><td>W-08</td><td>Admin: Manager assignment</td><td class="num hours">10</td><td class="num price">400</td></tr>
+    <tr data-hours="16"><td class="center"><input type="checkbox" checked></td><td>W-09</td><td>Admin: Global users + approval queue</td><td class="num hours">16</td><td class="num price">640</td></tr>
+    <tr data-hours="32"><td class="center"><input type="checkbox" checked></td><td>W-10</td><td>Admin: CMS (News, Events, Partners, Sport, Radio)</td><td class="num hours">32</td><td class="num price">1 280</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>W-11</td><td>Admin: Global audit log</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>W-12</td><td>Dashboard widgets</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr class="subtotal"><td></td><td></td><td>Подtotal Фаза 6</td><td class="num phase-hours">214</td><td class="num phase-price">8 560</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- PHASE 7 -->
+<div class="phase-section">
+<h3><span class="phase-badge">Фаза 7</span> QA, Security & Launch</h3>
+<table class="estimate-table" data-phase="7">
+  <thead>
+    <tr><th class="check-col">✓</th><th>ID</th><th>Задача</th><th class="num">Часове</th><th class="num">Цена (€)</th></tr>
+  </thead>
+  <tbody>
+    <tr data-hours="32"><td class="center"><input type="checkbox" checked></td><td>Q-01</td><td>Automated tests - auth, RBAC, access logic</td><td class="num hours">32</td><td class="num price">1 280</td></tr>
+    <tr data-hours="24"><td class="center"><input type="checkbox" checked></td><td>Q-02</td><td>Manual QA - mobile (iOS + Android)</td><td class="num hours">24</td><td class="num price">960</td></tr>
+    <tr data-hours="16"><td class="center"><input type="checkbox" checked></td><td>Q-03</td><td>Manual QA - web admin</td><td class="num hours">16</td><td class="num price">640</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>Q-04</td><td>Security review (OWASP, role isolation)</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="8"><td class="center"><input type="checkbox" checked></td><td>Q-05</td><td>Performance testing (API load basics)</td><td class="num hours">8</td><td class="num price">320</td></tr>
+    <tr data-hours="24"><td class="center"><input type="checkbox" checked></td><td>Q-06</td><td>UAT support (2 итерации)</td><td class="num hours">24</td><td class="num price">960</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>Q-07</td><td>App Store + Google Play submission</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="12"><td class="center"><input type="checkbox" checked></td><td>Q-08</td><td>Technical docs + API docs (Swagger)</td><td class="num hours">12</td><td class="num price">480</td></tr>
+    <tr data-hours="8"><td class="center"><input type="checkbox" checked></td><td>Q-09</td><td>Handover + deployment runbook</td><td class="num hours">8</td><td class="num price">320</td></tr>
+    <tr class="subtotal"><td></td><td></td><td>Подtotal Фаза 7</td><td class="num phase-hours">148</td><td class="num phase-price">5 920</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- PHASE 8 -->
+<div class="phase-section">
+<h3><span class="phase-badge">Фаза 8</span> Project Management</h3>
+<table class="estimate-table" data-phase="8">
+  <thead>
+    <tr><th class="check-col">✓</th><th>ID</th><th>Задача</th><th class="num">Часове</th><th class="num">Цена (€)</th></tr>
+  </thead>
+  <tbody>
+    <tr data-hours="40"><td class="center"><input type="checkbox" checked></td><td>PM-01</td><td>Sprint planning, weekly syncs, reports</td><td class="num hours">40</td><td class="num price">1 600</td></tr>
+    <tr data-hours="16"><td class="center"><input type="checkbox" checked></td><td>PM-02</td><td>Risk management, scope tracking</td><td class="num hours">16</td><td class="num price">640</td></tr>
+    <tr class="subtotal"><td></td><td></td><td>Подtotal Фаза 8</td><td class="num phase-hours">56</td><td class="num phase-price">2 240</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- GRAND TOTAL -->
+<table style="margin-top: 8px;">
+  <tbody>
+    <tr class="grand-total">
+      <td style="width:28px"></td>
+      <td style="width:60px"></td>
+      <td>ОБЩО (избрани задачи)</td>
+      <td class="num" id="grand-hours" style="width:80px">1 084</td>
+      <td class="num" id="grand-price" style="width:100px">43 360 €</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- PHASE SUMMARY -->
+<h2>3. Обобщение по фази</h2>
+<table id="phase-summary">
+  <thead>
+    <tr><th>Фаза</th><th>Описание</th><th class="num">Часове</th><th class="num">Цена (€)</th></tr>
+  </thead>
+  <tbody>
+    <tr data-phase="0"><td>0</td><td>Discovery & Setup</td><td class="num">56</td><td class="num">2 240</td></tr>
+    <tr data-phase="1"><td>1</td><td>Backend Core & Auth</td><td class="num">156</td><td class="num">6 240</td></tr>
+    <tr data-phase="2"><td>2</td><td>Backend: Сгради, Достъп, Автомобили</td><td class="num">120</td><td class="num">4 800</td></tr>
+    <tr data-phase="3"><td>3</td><td>Backend: CMS & Публично съдържание</td><td class="num">66</td><td class="num">2 640</td></tr>
+    <tr data-phase="4"><td>4</td><td>Нотификации</td><td class="num">60</td><td class="num">2 400</td></tr>
+    <tr data-phase="5"><td>5</td><td>Mobile App (iOS + Android)</td><td class="num">208</td><td class="num">8 320</td></tr>
+    <tr data-phase="6"><td>6</td><td>Web Admin Panel</td><td class="num">214</td><td class="num">8 560</td></tr>
+    <tr data-phase="7"><td>7</td><td>QA, Security & Launch</td><td class="num">148</td><td class="num">5 920</td></tr>
+    <tr data-phase="8"><td>8</td><td>Project Management</td><td class="num">56</td><td class="num">2 240</td></tr>
+  </tbody>
+</table>
+
+<!-- OPTIONAL -->
+<h2>4. Опционални add-ons</h2>
+<table>
+  <thead>
+    <tr><th class="check-col">✓</th><th>ID</th><th>Add-on</th><th class="num">Часове</th><th class="num">Цена (€)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center"><input type="checkbox"></td><td>OPT-01</td><td>Phone/OTP вход (SMS provider)</td><td class="num">24</td><td class="num">960</td></tr>
+    <tr><td class="center"><input type="checkbox"></td><td>OPT-02</td><td>Многоезичност (BG + EN)</td><td class="num">40</td><td class="num">1 600</td></tr>
+    <tr><td class="center"><input type="checkbox"></td><td>OPT-03</td><td>Analytics dashboard</td><td class="num">16</td><td class="num">640</td></tr>
+    <tr><td class="center"><input type="checkbox"></td><td>OPT-04</td><td>Offline mode за публично съдържание</td><td class="num">24</td><td class="num">960</td></tr>
+    <tr><td class="center"><input type="checkbox"></td><td>OPT-05</td><td>Dark mode (mobile + web)</td><td class="num">16</td><td class="num">640</td></tr>
+  </tbody>
+</table>
+
+<!-- METHODOLOGY -->
+<h2>5. Методология (AI-assisted vs класическа)</h2>
+<table class="methodology-table">
+  <thead>
+    <tr><th>Активност</th><th class="num">Класически</th><th class="num">AI-assisted</th><th class="num">Коеф.</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>CRUD / scaffold код</td><td class="num">100%</td><td class="num">40–50%</td><td class="num">×0.45</td></tr>
+    <tr><td>UI screens / компоненти</td><td class="num">100%</td><td class="num">55–65%</td><td class="num">×0.60</td></tr>
+    <tr><td>Бизнес логика / RBAC</td><td class="num">100%</td><td class="num">70–80%</td><td class="num">×0.75</td></tr>
+    <tr><td>DevOps / infra</td><td class="num">100%</td><td class="num">75–85%</td><td class="num">×0.80</td></tr>
+    <tr><td>QA & manual testing</td><td class="num">100%</td><td class="num">90–100%</td><td class="num">×0.95</td></tr>
+  </tbody>
+</table>
+
+<!-- PAYMENT -->
+<h2>6. Условия на плащане</h2>
+<table>
+  <thead>
+    <tr><th>Етап</th><th class="num">%</th><th class="num">Сума (€)</th><th>При</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Аванс</td><td class="num">30%</td><td class="num" id="pay-1">13 008</td><td>Подписване на договор</td></tr>
+    <tr><td>Milestone 1</td><td class="num">25%</td><td class="num" id="pay-2">10 840</td><td>Backend + Auth готов</td></tr>
+    <tr><td>Milestone 2</td><td class="num">25%</td><td class="num" id="pay-3">10 840</td><td>Mobile + Admin функционален</td></tr>
+    <tr><td>Final</td><td class="num">20%</td><td class="num" id="pay-4">8 672</td><td>QA passed + App Store</td></tr>
+  </tbody>
+</table>
+
+<!-- TECH STACK -->
+<h2>7. Технологичен стек</h2>
+<table>
+  <tbody>
+    <tr><td style="width:120px; font-weight:600;">Mobile</td><td>React Native (Expo)</td></tr>
+    <tr><td style="font-weight:600;">Web Admin</td><td>Next.js 14+ / React</td></tr>
+    <tr><td style="font-weight:600;">Backend</td><td>NestJS + PostgreSQL</td></tr>
+    <tr><td style="font-weight:600;">Auth</td><td>JWT + refresh tokens + 2FA</td></tr>
+    <tr><td style="font-weight:600;">Push</td><td>Firebase Cloud Messaging</td></tr>
+    <tr><td style="font-weight:600;">CI/CD</td><td>GitHub Actions + Docker</td></tr>
+  </tbody>
+</table>
+
+<!-- SIGNATURE -->
+<div class="signature-block">
+  <div>
+    <div class="signature-line">Доставчик: _________________________</div>
+  </div>
+  <div>
+    <div class="signature-line">Клиент: _________________________</div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>Emblema App - Оферта v1.0</span>
+  <span>Ставка: 40 €/ч · Без ДДС · Валидност: 30 дни</span>
+</div>
+
+<script>
+  const RATE = 40;
+
+  function formatNum(n) {
+    return n.toLocaleString('bg-BG');
+  }
+
+  function recalculate() {
+    let grandHours = 0;
+    let grandPrice = 0;
+
+    document.querySelectorAll('.estimate-table').forEach(table => {
+      let phaseHours = 0;
+      let phasePrice = 0;
+
+      table.querySelectorAll('tbody tr[data-hours]').forEach(row => {
+        const cb = row.querySelector('input[type="checkbox"]');
+        const hours = parseInt(row.dataset.hours, 10);
+        const price = hours * RATE;
+        const checked = cb.checked;
+
+        row.style.opacity = checked ? '1' : '0.4';
+        row.style.textDecoration = checked ? 'none' : 'line-through';
+
+        if (checked) {
+          phaseHours += hours;
+          phasePrice += price;
+        }
+      });
+
+      const subtotal = table.querySelector('.subtotal');
+      if (subtotal) {
+        subtotal.querySelector('.phase-hours').textContent = formatNum(phaseHours);
+        subtotal.querySelector('.phase-price').textContent = formatNum(phasePrice);
+      }
+
+      grandHours += phaseHours;
+      grandPrice += phasePrice;
+
+      const phaseNum = table.dataset.phase;
+      const summaryRow = document.querySelector(`#phase-summary tr[data-phase="${phaseNum}"]`);
+      if (summaryRow) {
+        summaryRow.querySelector('td:nth-child(3)').textContent = formatNum(phaseHours);
+        summaryRow.querySelector('td:nth-child(4)').textContent = formatNum(phasePrice);
+        summaryRow.style.opacity = phaseHours === 0 ? '0.4' : '1';
+      }
+    });
+
+    document.getElementById('total-hours').textContent = formatNum(grandHours) + ' ч.';
+    document.getElementById('total-price').textContent = formatNum(grandPrice) + ' €';
+    document.getElementById('grand-hours').textContent = formatNum(grandHours);
+    document.getElementById('grand-price').textContent = formatNum(grandPrice) + ' €';
+
+    document.getElementById('pay-1').textContent = formatNum(Math.round(grandPrice * 0.30));
+    document.getElementById('pay-2').textContent = formatNum(Math.round(grandPrice * 0.25));
+    document.getElementById('pay-3').textContent = formatNum(Math.round(grandPrice * 0.25));
+    document.getElementById('pay-4').textContent = formatNum(Math.round(grandPrice * 0.20));
+  }
+
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', recalculate);
+  });
+
+  recalculate();
+</script>
+
+</body>
+</html>
