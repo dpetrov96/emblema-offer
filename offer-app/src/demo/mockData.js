@@ -98,6 +98,41 @@ export const RADIO_CONFIG = {
   listeners: 42,
 };
 
+export const MOBILE_RADIO_BANNERS = [
+  {
+    id: 1,
+    tag: "На ефир",
+    title: "Chill & Lounge",
+    subtitle: "Сега · 42 слушатели",
+    image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=320&h=200&fit=crop&q=80",
+    tone: "rose",
+  },
+  {
+    id: 2,
+    tag: "Вечер",
+    title: "Evening Jazz",
+    subtitle: "20:00 · DJ Mark",
+    image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=320&h=200&fit=crop&q=80",
+    tone: "indigo",
+  },
+  {
+    id: 3,
+    tag: "Подкаст",
+    title: "Домът на Emblema",
+    subtitle: "Нов епизод · 28 мин",
+    image: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=320&h=200&fit=crop&q=80",
+    tone: "violet",
+  },
+  {
+    id: 4,
+    tag: "Уикенд",
+    title: "Weekend Mix",
+    subtitle: "Събота · 18:00",
+    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=320&h=200&fit=crop&q=80",
+    tone: "amber",
+  },
+];
+
 export const MOBILE_NEWS = [
   {
     id: 1,

@@ -213,6 +213,35 @@ export function IconPlay(props) {
   );
 }
 
+export function IconPause(props) {
+  return (
+    <Icon {...props}>
+      <rect x="7" y="5" width="4" height="14" rx="1" fill="currentColor" stroke="none" />
+      <rect x="13" y="5" width="4" height="14" rx="1" fill="currentColor" stroke="none" />
+    </Icon>
+  );
+}
+
+export function IconSkipBack(props) {
+  return (
+    <Icon {...props}>
+      <path d="M7 7v10" />
+      <path d="M19 7v10" />
+      <path d="m11 12 8-5v10l-8-5z" fill="currentColor" stroke="none" />
+    </Icon>
+  );
+}
+
+export function IconSkipForward(props) {
+  return (
+    <Icon {...props}>
+      <path d="M5 7v10" />
+      <path d="M17 7v10" />
+      <path d="m13 12-8-5v10l8-5z" fill="currentColor" stroke="none" />
+    </Icon>
+  );
+}
+
 export function IconNews(props) {
   return (
     <Icon {...props}>

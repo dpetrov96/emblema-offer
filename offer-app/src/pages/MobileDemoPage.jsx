@@ -22,8 +22,11 @@ import {
   IconParking,
   IconPhone,
   IconPlay,
+  IconPause,
   IconQr,
   IconRadio,
+  IconSkipBack,
+  IconSkipForward,
   IconSmartHome,
   IconSpark,
   IconSport,
@@ -40,8 +43,10 @@ import {
   MOBILE_HOME,
   MOBILE_MESSAGES,
   MOBILE_NEWS,
+  MOBILE_RADIO_BANNERS,
   MOBILE_VEHICLES,
   PARTNERS,
+  RADIO_CONFIG,
   SPORT_VENUES,
 } from "../demo/mockData";
 
@@ -158,6 +163,79 @@ function MobileTabBar({ active, onChange }) {
         </button>
       ))}
     </nav>
+  );
+}
+
+function RadioScreen() {
+  const [playing, setPlaying] = useState(true);
+  const [activeShowId, setActiveShowId] = useState(MOBILE_RADIO_BANNERS[0].id);
+  const activeShow = MOBILE_RADIO_BANNERS.find((b) => b.id === activeShowId) ?? MOBILE_RADIO_BANNERS[0];
+
+  return (
+    <div className="m-screen m-screen--radio">
+      <div className="m-radio-glow" aria-hidden="true" />
+      <div className="m-radio-player">
+        <div className="m-radio-art">
+          <img src={activeShow.image} alt="" className="m-radio-art__img" />
+          <span className="m-radio-art__overlay" aria-hidden="true">
+            <IconRadio size={32} stroke={1.8} />
+          </span>
+        </div>
+        <div className="m-radio-live">
+          <span className="m-radio-live__dot" aria-hidden="true" />
+          {RADIO_CONFIG.status}
+        </div>
+        <h2 className="m-radio-title">{activeShow.title}</h2>
+        <p className="m-radio-meta">{activeShow.subtitle}</p>
+        <div className={`m-radio-wave ${playing ? "m-radio-wave--active" : ""}`} aria-hidden="true">
+          {[0, 1, 2, 3, 4].map((i) => (
+            <span key={i} className="m-radio-wave__bar" style={{ animationDelay: `${i * 0.12}s` }} />
+          ))}
+        </div>
+        <div className="m-radio-controls">
+          <button type="button" className="m-radio-btn" aria-label="Previous">
+            <IconSkipBack size={20} stroke={2} />
+          </button>
+          <button
+            type="button"
+            className="m-radio-btn m-radio-btn--play"
+            aria-label={playing ? "Pause" : "Play"}
+            onClick={() => setPlaying((p) => !p)}
+          >
+            {playing ? <IconPause size={24} /> : <IconPlay size={24} className="m-radio-play-icon" />}
+          </button>
+          <button type="button" className="m-radio-btn" aria-label="Next">
+            <IconSkipForward size={20} stroke={2} />
+          </button>
+        </div>
+      </div>
+
+      <div className="m-section-label m-section-label--inset m-radio-banners-label">
+        <IconRadio size={14} /> Още от {RADIO_CONFIG.name}
+      </div>
+      <div className="m-scroll-strip m-scroll-strip--radio">
+        {MOBILE_RADIO_BANNERS.map((b) => (
+          <button
+            key={b.id}
+            type="button"
+            className={`m-featured-tile m-featured-tile--${b.tone}${b.id === activeShowId ? " m-featured-tile--active" : ""}`}
+            onClick={() => {
+              setActiveShowId(b.id);
+              setPlaying(true);
+            }}
+          >
+            <div className="m-featured-tile__img">
+              <img src={b.image} alt="" loading="lazy" />
+            </div>
+            <div className="m-featured-tile__body">
+              <span className="m-featured-tile__tag">{b.tag}</span>
+              <strong>{b.title}</strong>
+              <span>{b.subtitle}</span>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -489,18 +567,7 @@ function MobileScreen({ screen, onNavigate, selectedNewsId }) {
         </div>
       );
     case "radio":
-      return (
-        <div className="m-screen m-screen--radio">
-          <div className="m-radio-art"><IconRadio size={40} /></div>
-          <h2>Emblema Radio</h2>
-          <p>Live · Chill & Lounge</p>
-          <div className="m-radio-controls">
-            <button type="button" aria-label="Previous">⏮</button>
-            <button type="button" className="m-radio-play" aria-label="Play"><IconPlay size={22} /></button>
-            <button type="button" aria-label="Next">⏭</button>
-          </div>
-        </div>
-      );
+      return <RadioScreen />;
     case "profile":
       return (
         <div className="m-screen">
