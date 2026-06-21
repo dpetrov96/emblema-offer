@@ -74,7 +74,6 @@ body::after {
   body { padding: 0; }
   .no-print { display: none !important; }
   .print-only { display: block !important; }
-  .download-btn { display: none !important; }
   .app-sidebar { display: none !important; }
   .page { max-width: 100% !important; padding: 0 !important; }
   .glass-card { box-shadow: none !important; border: 1px solid #ddd !important; page-break-inside: avoid; }

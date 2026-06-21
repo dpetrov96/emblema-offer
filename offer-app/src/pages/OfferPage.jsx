@@ -178,13 +178,6 @@ export default function OfferPage() {
       <GlowOrb color="rgba(168,85,247,0.14)" style={{ top: "20%", right: "-10%", width: 400, height: 400 }} />
       <GlowOrb color="rgba(236,72,153,0.1)" style={{ bottom: "5%", left: "30%", width: 350, height: 350 }} />
 
-      <button type="button" className="download-btn no-print" onClick={() => window.print()}>
-        <svg className="download-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-          <path d="M12 3v12M7 10l5 5 5-5M5 21h14" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-        Изтегли PDF
-      </button>
-
       <main className="page">
         <section className="hero-summary glass-card">
           <div className="hero-summary__header">
