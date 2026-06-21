@@ -88,6 +88,35 @@ function Field({ label, children }) {
   return <label>{label}{children}</label>;
 }
 
+function AdminThumb({ src, alt = "", size = "md" }) {
+  if (!src) return <span className={`demo-thumb demo-thumb--${size} demo-thumb--empty`} aria-hidden="true" />;
+  return <img className={`demo-thumb demo-thumb--${size}`} src={src} alt={alt} loading="lazy" />;
+}
+
+function AdminUserCell({ name, sub, avatar }) {
+  return (
+    <div className="demo-user-cell">
+      <AdminThumb src={avatar} alt={name} size="avatar" />
+      <div className="demo-user-cell__text">
+        <strong>{name}</strong>
+        {sub && <span>{sub}</span>}
+      </div>
+    </div>
+  );
+}
+
+function AdminMediaTitle({ image, title, sub }) {
+  return (
+    <div className="demo-media-title">
+      <AdminThumb src={image} alt={title} />
+      <div className="demo-media-title__text">
+        <strong>{title}</strong>
+        {sub && <span>{sub}</span>}
+      </div>
+    </div>
+  );
+}
+
 function RowActions({ onEdit, onDelete, extra }) {
   return (
     <div className="demo-inline-actions">
@@ -120,19 +149,46 @@ export function DashboardSection({ state, role, onNavigate, onAudit }) {
     <>
       <h2 className="demo-content__title">Табло · {role === "admin" ? "Central Admin" : "Manager"}</h2>
       <div className="demo-stats-row">
-        <StatBox label="Жители" value={String(state.users.filter((u) => u.status === "active").length)} sub="Emblema Residence" />
+        <StatBox label="Жители" value={String(state.users.filter((u) => u.status === "active").length)} sub={`${state.buildings.length} сгради`} />
         <StatBox label="Чакащи одобрение" value={String(pending)} sub="регистрации" />
         <StatBox label="Push днес" value={String(state.messages.length)} sub="изпратени" />
         <StatBox label="Активен достъп" value={String(state.access.length)} sub="записи" />
       </div>
+
+      <div className="demo-dash-buildings">
+        <h3>Сгради в портфолио</h3>
+        <div className="demo-building-cards">
+          {state.buildings.map((b) => (
+            <article key={b.id} className="demo-building-card">
+              <div className="demo-building-card__media">
+                <img src={b.image} alt={b.name} loading="lazy" />
+              </div>
+              <div className="demo-building-card__body">
+                <strong>{b.name}</strong>
+                <span>{b.address}</span>
+                <div className="demo-building-card__meta">
+                  <span>{b.units} ап.</span>
+                  <span>{b.entrances} входа</span>
+                  <span>{b.parking}</span>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
       <div className="demo-panels">
         <div className="demo-panel">
-          <h3>Последна активност</h3>
-          <ul className="demo-list">
-            {state.auditLog.slice(0, 5).map((a) => (
-              <li key={a.id}>
-                <strong>{a.action}</strong> · {a.target}
-                <span>{a.time}</span>
+          <h3>Последни новини</h3>
+          <ul className="demo-feed">
+            {state.news.slice(0, 3).map((n) => (
+              <li key={n.id} className="demo-feed__item">
+                <AdminThumb src={n.image} alt={n.title} />
+                <div>
+                  <strong>{n.title}</strong>
+                  <span>{n.category} · {n.date}</span>
+                  {n.excerpt && <p>{n.excerpt}</p>}
+                </div>
               </li>
             ))}
           </ul>
@@ -146,6 +202,15 @@ export function DashboardSection({ state, role, onNavigate, onAudit }) {
               Одобри заявки ({pending})
             </button>
           </div>
+          <h3 className="demo-subtitle">Последна активност</h3>
+          <ul className="demo-list">
+            {state.auditLog.slice(0, 4).map((a) => (
+              <li key={a.id}>
+                <strong>{a.action}</strong> · {a.target}
+                <span>{a.time}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </>
@@ -155,7 +220,7 @@ export function DashboardSection({ state, role, onNavigate, onAudit }) {
 export function UsersSection({ state, setState, form, setForm, onAudit, onToast }) {
   const open = form?.section === "users";
   const editing = open && form.mode === "edit" ? state.users.find((u) => u.id === form.id) : null;
-  const initial = editing ?? { name: "", email: "", apt: "", status: "active" };
+  const initial = editing ?? { name: "", email: "", apt: "", building: "Emblema Residence", phone: "", status: "active", avatar: "" };
   const [draft, setDraft] = useFormState(initial, open);
 
   if (open) {
@@ -174,9 +239,10 @@ export function UsersSection({ state, setState, form, setForm, onAudit, onToast 
             onToast("Жителят е обновен");
           } else {
             const id = nextId(state.users);
+            const avatar = draft.avatar || `https://ui-avatars.com/api/?background=6366f1&color=fff&name=${encodeURIComponent(draft.name || "User")}`;
             setState((s) => ({
               ...s,
-              users: [...s.users, { id, role: "User", ...draft }],
+              users: [...s.users, { id, role: "User", ...draft, avatar }],
             }));
             onAudit("Жител добавен", draft.name);
             onToast("Жителят е добавен");
@@ -187,6 +253,9 @@ export function UsersSection({ state, setState, form, setForm, onAudit, onToast 
         <Field label="Име"><input value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} required /></Field>
         <Field label="Email"><input type="email" value={draft.email} onChange={(e) => setDraft({ ...draft, email: e.target.value })} required /></Field>
         <Field label="Апартамент"><input value={draft.apt} onChange={(e) => setDraft({ ...draft, apt: e.target.value })} placeholder="12A" /></Field>
+        <Field label="Сграда"><input value={draft.building ?? ""} onChange={(e) => setDraft({ ...draft, building: e.target.value })} /></Field>
+        <Field label="Телефон"><input value={draft.phone ?? ""} onChange={(e) => setDraft({ ...draft, phone: e.target.value })} placeholder="+359..." /></Field>
+        <Field label="URL на снимка"><input value={draft.avatar ?? ""} onChange={(e) => setDraft({ ...draft, avatar: e.target.value })} placeholder="https://..." /></Field>
         <Field label="Статус">
           <select value={draft.status} onChange={(e) => setDraft({ ...draft, status: e.target.value })}>
             <option value="active">active</option>
@@ -202,9 +271,13 @@ export function UsersSection({ state, setState, form, setForm, onAudit, onToast 
       <SectionHeader title="Жители" onAdd={() => setForm({ section: "users", mode: "add" })} addLabel="+ Жител" />
       <DataTable
         columns={[
-          { key: "name", label: "Име" },
+          {
+            key: "name",
+            label: "Жител",
+            render: (r) => <AdminUserCell name={r.name} sub={`${r.building ?? "—"} · ап. ${r.apt}`} avatar={r.avatar} />,
+          },
           { key: "email", label: "Email" },
-          { key: "apt", label: "Ап." },
+          { key: "phone", label: "Телефон" },
           { key: "status", label: "Статус", render: (r) => <span className={`demo-pill demo-pill--${r.status}`}>{r.status}</span> },
           {
             key: "actions",
@@ -248,8 +321,11 @@ export function ApprovalsSection({ state, setState, onAudit, onToast }) {
       <SectionHeader title="Опашка за одобрение" />
       <DataTable
         columns={[
-          { key: "name", label: "Кандидат" },
-          { key: "email", label: "Email" },
+          {
+            key: "name",
+            label: "Кандидат",
+            render: (r) => <AdminUserCell name={r.name} sub={`${r.building ?? "—"} · ${r.email}`} avatar={r.avatar} />,
+          },
           { key: "apt", label: "Ап." },
           {
             key: "actions",
@@ -469,9 +545,11 @@ export function MessagesSection({ state, setState, form, setForm, onAudit, onToa
       <SectionHeader title="Съобщения & Push" onAdd={() => setForm({ section: "messages", mode: "compose" })} addLabel="+ Съобщение" />
       <DataTable
         columns={[
-          { key: "title", label: "Заглавие" },
-          { key: "audience", label: "До" },
-          { key: "sent", label: "Изпратено" },
+          {
+            key: "title",
+            label: "Съобщение",
+            render: (r) => <AdminMediaTitle image={r.image} title={r.title} sub={`${r.audience} · ${r.sent}`} />,
+          },
           { key: "read", label: "Прочетено" },
           {
             key: "actions",
@@ -513,7 +591,7 @@ export function AuditSection({ state }) {
 export function BuildingsSection({ state, setState, form, setForm, onAudit, onToast }) {
   const open = form?.section === "buildings";
   const editing = open && form.mode === "edit" ? state.buildings.find((b) => b.id === form.id) : null;
-  const initial = editing ?? { name: "", address: "", units: "", entrances: "" };
+  const initial = editing ?? { name: "", address: "", units: "", entrances: "", manager: "", yearBuilt: "", parking: "", image: "" };
   const [draft, setDraft] = useFormState(initial, open);
   const structureOpen = form?.section === "buildings" && form.mode === "structure";
   const [structureDraft, setStructureDraft] = useFormState({ label: "" }, structureOpen);
@@ -546,7 +624,13 @@ export function BuildingsSection({ state, setState, form, setForm, onAudit, onTo
         onCancel={() => setForm(null)}
         onSubmit={() => {
           if (!draft.name.trim()) return;
-          const payload = { ...draft, units: Number(draft.units) || 0, entrances: Number(draft.entrances) || 0 };
+          const payload = {
+            ...draft,
+            units: Number(draft.units) || 0,
+            entrances: Number(draft.entrances) || 0,
+            yearBuilt: Number(draft.yearBuilt) || undefined,
+            image: draft.image || "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=720&h=420&fit=crop&q=80",
+          };
           if (form.mode === "edit") {
             setState((s) => ({
               ...s,
@@ -567,8 +651,12 @@ export function BuildingsSection({ state, setState, form, setForm, onAudit, onTo
       >
         <Field label="Име"><input value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} required /></Field>
         <Field label="Адрес"><input value={draft.address} onChange={(e) => setDraft({ ...draft, address: e.target.value })} /></Field>
+        <Field label="Мениджър"><input value={draft.manager ?? ""} onChange={(e) => setDraft({ ...draft, manager: e.target.value })} /></Field>
+        <Field label="Година"><input type="number" min="1900" value={draft.yearBuilt ?? ""} onChange={(e) => setDraft({ ...draft, yearBuilt: e.target.value })} /></Field>
+        <Field label="Паркинг"><input value={draft.parking ?? ""} onChange={(e) => setDraft({ ...draft, parking: e.target.value })} placeholder="2 нива · 120 места" /></Field>
         <Field label="Апартаменти"><input type="number" min="0" value={draft.units} onChange={(e) => setDraft({ ...draft, units: e.target.value })} /></Field>
         <Field label="Входове"><input type="number" min="0" value={draft.entrances} onChange={(e) => setDraft({ ...draft, entrances: e.target.value })} /></Field>
+        <Field label="URL на снимка"><input value={draft.image ?? ""} onChange={(e) => setDraft({ ...draft, image: e.target.value })} placeholder="https://..." /></Field>
       </FormPanel>
     );
   }
@@ -576,29 +664,34 @@ export function BuildingsSection({ state, setState, form, setForm, onAudit, onTo
   return (
     <>
       <SectionHeader title="Сгради & структура" onAdd={() => setForm({ section: "buildings", mode: "add" })} addLabel="+ Сграда" />
-      <DataTable
-        columns={[
-          { key: "name", label: "Сграда" },
-          { key: "address", label: "Адрес" },
-          { key: "units", label: "Ап." },
-          { key: "entrances", label: "Входове" },
-          {
-            key: "actions",
-            label: "",
-            render: (r) => (
-              <RowActions
-                onEdit={() => setForm({ section: "buildings", mode: "edit", id: r.id })}
-                onDelete={() => {
-                  setState((s) => ({ ...s, buildings: s.buildings.filter((b) => b.id !== r.id) }));
-                  onAudit("Сграда изтрита", r.name);
+      <div className="demo-building-cards demo-building-cards--admin">
+        {state.buildings.map((b) => (
+          <article key={b.id} className="demo-building-card">
+            <div className="demo-building-card__media">
+              <img src={b.image} alt={b.name} loading="lazy" />
+            </div>
+            <div className="demo-building-card__body">
+              <strong>{b.name}</strong>
+              <span>{b.address}</span>
+              <div className="demo-building-card__meta">
+                <span>{b.units} ап.</span>
+                <span>{b.entrances} входа</span>
+                {b.yearBuilt && <span>{b.yearBuilt} г.</span>}
+              </div>
+              {b.manager && <p className="demo-building-card__manager">Мениджър: {b.manager}</p>}
+              {b.parking && <p className="demo-building-card__manager">{b.parking}</p>}
+              <div className="demo-building-card__actions">
+                <button type="button" className="demo-btn demo-btn--sm demo-btn--ghost" onClick={() => setForm({ section: "buildings", mode: "edit", id: b.id })}>Редакция</button>
+                <button type="button" className="demo-btn demo-btn--sm demo-btn--danger" onClick={() => {
+                  setState((s) => ({ ...s, buildings: s.buildings.filter((x) => x.id !== b.id) }));
+                  onAudit("Сграда изтрита", b.name);
                   onToast("Сградата е изтрита");
-                }}
-              />
-            ),
-          },
-        ]}
-        rows={state.buildings}
-      />
+                }}>Изтрий</button>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
       <div className="demo-tree">
         <div className="demo-tree__head">
           <h3>Структура · Emblema Residence</h3>
@@ -629,7 +722,7 @@ export function BuildingsSection({ state, setState, form, setForm, onAudit, onTo
 export function ManagersSection({ state, setState, form, setForm, onAudit, onToast }) {
   const open = form?.section === "managers";
   const editing = open && form.mode === "edit" ? state.managers.find((m) => m.id === form.id) : null;
-  const initial = editing ?? { manager: "", building: state.buildings[0]?.name ?? "" };
+  const initial = editing ?? { manager: "", building: state.buildings[0]?.name ?? "", avatar: "" };
   const [draft, setDraft] = useFormState(initial, open);
 
   if (open) {
@@ -658,6 +751,7 @@ export function ManagersSection({ state, setState, form, setForm, onAudit, onToa
         }}
       >
         <Field label="Мениджър"><input value={draft.manager} onChange={(e) => setDraft({ ...draft, manager: e.target.value })} required /></Field>
+        <Field label="URL на снимка"><input value={draft.avatar ?? ""} onChange={(e) => setDraft({ ...draft, avatar: e.target.value })} placeholder="https://..." /></Field>
         <Field label="Сграда">
           <select value={draft.building} onChange={(e) => setDraft({ ...draft, building: e.target.value })}>
             {state.buildings.map((b) => (
@@ -674,8 +768,11 @@ export function ManagersSection({ state, setState, form, setForm, onAudit, onToa
       <SectionHeader title="Мениджъри ↔ Сгради" onAdd={() => setForm({ section: "managers", mode: "add" })} addLabel="+ Назначение" />
       <DataTable
         columns={[
-          { key: "manager", label: "Мениджър" },
-          { key: "building", label: "Сграда" },
+          {
+            key: "manager",
+            label: "Мениджър",
+            render: (r) => <AdminUserCell name={r.manager} sub={r.building} avatar={r.avatar} />,
+          },
           {
             key: "actions",
             label: "",
@@ -791,7 +888,11 @@ export function NewsSection(props) {
       addLabel="+ Новина"
       sectionKey="cms-news"
       columns={[
-        { key: "title", label: "Заглавие" },
+        {
+          key: "title",
+          label: "Заглавие",
+          render: (r) => <AdminMediaTitle image={r.image} title={r.title} sub={r.excerpt ?? r.category} />,
+        },
         { key: "category", label: "Категория" },
         { key: "date", label: "Дата" },
         { key: "published", label: "Статус", render: (r) => (r.published ? "Публикувана" : "Чернова") },
@@ -800,6 +901,8 @@ export function NewsSection(props) {
         { key: "title", label: "Заглавие", required: true },
         { key: "category", label: "Категория", type: "select", options: ["Събития", "Обслужване", "Лоялност", "Общи"] },
         { key: "date", label: "Дата", default: todayLabel() },
+        { key: "excerpt", label: "Кратко описание", type: "textarea" },
+        { key: "image", label: "URL на снимка", type: "url" },
         { key: "published", label: "Публикувана", type: "checkbox", default: false },
       ]}
       mapSave={(d) => ({ ...d, published: !!d.published })}
@@ -815,9 +918,11 @@ export function EventsSection(props) {
       addLabel="+ Събитие"
       sectionKey="cms-events"
       columns={[
-        { key: "title", label: "Събитие" },
-        { key: "date", label: "Дата" },
-        { key: "time", label: "Час" },
+        {
+          key: "title",
+          label: "Събитие",
+          render: (r) => <AdminMediaTitle image={r.image} title={r.title} sub={`${r.date} · ${r.time}`} />,
+        },
         { key: "location", label: "Локация" },
       ]}
       fields={[
@@ -825,6 +930,7 @@ export function EventsSection(props) {
         { key: "date", label: "Дата", default: todayLabel() },
         { key: "time", label: "Час", default: "18:00" },
         { key: "location", label: "Локация", required: true },
+        { key: "image", label: "URL на снимка", type: "url" },
       ]}
     />
   );
@@ -838,9 +944,11 @@ export function PartnersSection(props) {
       addLabel="+ Партньор"
       sectionKey="cms-partners"
       columns={[
-        { key: "name", label: "Партньор" },
-        { key: "category", label: "Категория" },
-        { key: "discount", label: "Отстъпка" },
+        {
+          key: "name",
+          label: "Партньор",
+          render: (r) => <AdminMediaTitle image={r.image} title={r.name} sub={`${r.category} · ${r.discount}`} />,
+        },
       ]}
       fields={[
         { key: "name", label: "Име", required: true },
@@ -860,9 +968,11 @@ export function SportSection(props) {
       addLabel="+ Обект"
       sectionKey="cms-sport"
       columns={[
-        { key: "name", label: "Обект" },
-        { key: "sport", label: "Спорт" },
-        { key: "phone", label: "Контакт" },
+        {
+          key: "name",
+          label: "Обект",
+          render: (r) => <AdminMediaTitle image={r.image} title={r.name} sub={`${r.sport} · ${r.phone}`} />,
+        },
       ]}
       fields={[
         { key: "name", label: "Име", required: true },

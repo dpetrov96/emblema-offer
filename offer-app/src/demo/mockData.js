@@ -1,13 +1,106 @@
 export const BUILDINGS = [
-  { id: 1, name: "Emblema Residence", address: "ул. Оборище 12, София", units: 84, entrances: 3 },
-  { id: 2, name: "Emblema Garden", address: "бул. България 98, София", units: 56, entrances: 2 },
+  {
+    id: 1,
+    name: "Emblema Residence",
+    address: "ул. Оборище 12, София",
+    units: 84,
+    entrances: 3,
+    manager: "Стефан Илиев",
+    yearBuilt: 2019,
+    parking: "2 нива · 120 места",
+    image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=720&h=420&fit=crop&q=80",
+  },
+  {
+    id: 2,
+    name: "Emblema Garden",
+    address: "бул. България 98, София",
+    units: 56,
+    entrances: 2,
+    manager: "Diana Koleva",
+    yearBuilt: 2021,
+    parking: "1 ниво · 64 места",
+    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=720&h=420&fit=crop&q=80",
+  },
+  {
+    id: 3,
+    name: "Emblema Sky",
+    address: "бул. Витоша 72, София",
+    units: 42,
+    entrances: 1,
+    manager: "Стефан Илиев",
+    yearBuilt: 2024,
+    parking: "Подземен · 38 места",
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=720&h=420&fit=crop&q=80",
+  },
 ];
 
 export const USERS = [
-  { id: 1, name: "Иван Петров", email: "ivan@email.com", apt: "12A", role: "User", status: "active" },
-  { id: 2, name: "Мария Георгиева", email: "maria@email.com", apt: "5B", role: "User", status: "active" },
-  { id: 3, name: "Георги Димитров", email: "georgi@email.com", apt: "8C", role: "User", status: "pending" },
-  { id: 4, name: "Елена Стоянова", email: "elena@email.com", apt: "21D", role: "User", status: "active" },
+  {
+    id: 1,
+    name: "Иван Петров",
+    email: "ivan.petrov@gmail.com",
+    apt: "12A",
+    building: "Emblema Residence",
+    phone: "+359 888 111 001",
+    role: "User",
+    status: "active",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=96&h=96&fit=crop&q=80",
+  },
+  {
+    id: 2,
+    name: "Мария Георгиева",
+    email: "maria.g@email.com",
+    apt: "5B",
+    building: "Emblema Residence",
+    phone: "+359 888 222 003",
+    role: "User",
+    status: "active",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=96&h=96&fit=crop&q=80",
+  },
+  {
+    id: 3,
+    name: "Георги Димитров",
+    email: "georgi.d@gmail.com",
+    apt: "8C",
+    building: "Emblema Garden",
+    phone: "+359 888 333 004",
+    role: "User",
+    status: "pending",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=96&h=96&fit=crop&q=80",
+  },
+  {
+    id: 4,
+    name: "Елена Стоянова",
+    email: "elena.s@email.com",
+    apt: "21D",
+    building: "Emblema Residence",
+    phone: "+359 888 444 005",
+    role: "User",
+    status: "active",
+    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=96&h=96&fit=crop&q=80",
+  },
+  {
+    id: 5,
+    name: "Николай Тодоров",
+    email: "nikolay.t@gmail.com",
+    apt: "3A",
+    building: "Emblema Sky",
+    phone: "+359 888 555 006",
+    role: "User",
+    status: "pending",
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=96&h=96&fit=crop&q=80",
+  },
+  {
+    id: 6,
+    name: "Полина Иванова",
+    email: "polina.i@email.com",
+    apt: "14B",
+    building: "Emblema Garden",
+    phone: "+359 888 666 007",
+    role: "User",
+    status: "active",
+    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=96&h=96&fit=crop&q=80",
+  },
 ];
 
 export const ACCESS_ENTRIES = [
@@ -23,8 +116,30 @@ export const VEHICLES = [
 ];
 
 export const MESSAGES = [
-  { id: 1, title: "Ремонт на асансьор", audience: "Цяла сграда", sent: "20.06.2026", read: "78%" },
-  { id: 2, title: "Ново паркомясто", audience: "Вход B", sent: "18.06.2026", read: "92%" },
+  {
+    id: 1,
+    title: "Ремонт на асансьор",
+    audience: "Цяла сграда",
+    sent: "20.06.2026",
+    read: "78%",
+    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=120&h=120&fit=crop&q=80",
+  },
+  {
+    id: 2,
+    title: "Ново паркомясто",
+    audience: "Вход B",
+    sent: "18.06.2026",
+    read: "92%",
+    image: "https://images.unsplash.com/photo-1551524164-687a55dd1126?w=120&h=120&fit=crop&q=80",
+  },
+  {
+    id: 3,
+    title: "Доставка на вода · 22.06",
+    audience: "Emblema Garden",
+    sent: "17.06.2026",
+    read: "64%",
+    image: "https://images.unsplash.com/photo-1548839140-29a7496591c5?w=120&h=120&fit=crop&q=80",
+  },
 ];
 
 export const AUDIT_LOG = [
@@ -34,14 +149,60 @@ export const AUDIT_LOG = [
 ];
 
 export const NEWS = [
-  { id: 1, title: "Лятен фестивал в двора", category: "Събития", date: "20.06.2026", published: true },
-  { id: 2, title: "Подобрения в паркинга", category: "Обслужване", date: "15.06.2026", published: true },
-  { id: 3, title: "Нови партньори в лоялност", category: "Лоялност", date: "10.06.2026", published: false },
+  {
+    id: 1,
+    title: "Лятен фестивал в двора",
+    category: "Събития",
+    date: "20.06.2026",
+    published: true,
+    image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=240&h=160&fit=crop&q=80",
+    excerpt: "Музика, храна и детска зона на 5 юли.",
+  },
+  {
+    id: 2,
+    title: "Подобрения в паркинга",
+    category: "Обслужване",
+    date: "15.06.2026",
+    published: true,
+    image: "https://images.unsplash.com/photo-1551524164-687a55dd1126?w=240&h=160&fit=crop&q=80",
+    excerpt: "LED осветление и нова маркировка на ниво -1.",
+  },
+  {
+    id: 3,
+    title: "Нови партньори в лоялност",
+    category: "Лоялност",
+    date: "10.06.2026",
+    published: false,
+    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=240&h=160&fit=crop&q=80",
+    excerpt: "Green Bistro и FitZone вече в приложението.",
+  },
 ];
 
 export const EVENTS = [
-  { id: 1, title: "Йога на покрива", date: "25.06.2026", time: "08:00", location: "Покрив" },
-  { id: 2, title: "Детски работилница", date: "28.06.2026", time: "11:00", location: "Club Emblema" },
+  {
+    id: 1,
+    title: "Йога на покрива",
+    date: "25.06.2026",
+    time: "08:00",
+    location: "Покрив · Emblema Residence",
+    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=240&h=160&fit=crop&q=80",
+  },
+  {
+    id: 2,
+    title: "Детска работилница",
+    date: "28.06.2026",
+    time: "11:00",
+    location: "Club Emblema",
+    image: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=240&h=160&fit=crop&q=80",
+  },
+  {
+    id: 3,
+    title: "BBQ в двора",
+    date: "05.07.2026",
+    time: "18:30",
+    location: "Двор · Emblema Garden",
+    image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=240&h=160&fit=crop&q=80",
+  },
 ];
 
 export const PARTNERS = [

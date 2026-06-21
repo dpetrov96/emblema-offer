@@ -13,8 +13,18 @@ import {
 } from "./mockData";
 
 export const INITIAL_MANAGERS = [
-  { id: 1, manager: "Стефан Илиев", building: "Emblema Residence" },
-  { id: 2, manager: "Diana Koleva", building: "Emblema Garden" },
+  {
+    id: 1,
+    manager: "Стефан Илиев",
+    building: "Emblema Residence",
+    avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=96&h=96&fit=crop&q=80",
+  },
+  {
+    id: 2,
+    manager: "Diana Koleva",
+    building: "Emblema Garden",
+    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=96&h=96&fit=crop&q=80",
+  },
 ];
 
 export const INITIAL_BUILDING_STRUCTURE = [
