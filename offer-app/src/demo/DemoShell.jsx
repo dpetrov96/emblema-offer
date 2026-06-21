@@ -9,9 +9,9 @@ export function IphoneFrame({ children }) {
     <div className="iphone-stage">
       <div className="iphone-device">
         <div className="iphone-device__bezel">
-          <div className="iphone-device__island" />
+          <div className="iphone-device__chrome iphone-device__island" aria-hidden="true" />
           <div className="iphone-device__screen">{children}</div>
-          <div className="iphone-device__home-indicator" />
+          <div className="iphone-device__chrome iphone-device__home-indicator" aria-hidden="true" />
         </div>
       </div>
     </div>

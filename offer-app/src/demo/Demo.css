@@ -2117,13 +2117,87 @@ button.m-list-item {
   .demo-stats-row { grid-template-columns: repeat(2, 1fr); }
   .demo-panels { grid-template-columns: 1fr; }
   .demo-links { grid-template-columns: 1fr; }
+}
+
+/* Mobile demo: full-screen app on phones, iPhone frame on desktop only */
+@media (max-width: 768px) {
+  .demo-page--mobile.demo-page--immersive {
+    background: #f8fafc;
+    min-height: 100dvh;
+  }
+
+  .demo-page--mobile .demo-floating-back {
+    top: max(10px, env(safe-area-inset-top));
+    left: max(12px, env(safe-area-inset-left));
+  }
+
+  .demo-page--mobile .demo-mobile-stage {
+    min-height: 100dvh;
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .demo-page--mobile .iphone-stage {
+    width: 100%;
+    min-height: 100dvh;
+  }
+
+  .demo-page--mobile .iphone-device {
+    padding: 0;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+    width: 100%;
+    min-height: 100dvh;
+  }
+
+  .demo-page--mobile .iphone-device__bezel {
+    width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    transform: none !important;
+    background: #f8fafc;
+  }
+
+  .demo-page--mobile .iphone-device__chrome {
+    display: none;
+  }
+
+  .demo-page--mobile .iphone-device__screen {
+    background: #f8fafc;
+  }
+
+  .demo-page--mobile .m-app {
+    min-height: 100dvh;
+  }
+
+  .demo-page--mobile .m-status,
+  .demo-page--mobile .m-welcome__status {
+    display: none;
+  }
+
+  .demo-page--mobile .m-app__body:not(.m-app__body--welcome) .m-screen {
+    padding-top: max(8px, env(safe-area-inset-top));
+  }
+
+  .demo-page--mobile .m-welcome__content {
+    padding-top: max(24px, env(safe-area-inset-top));
+  }
+
+  .demo-page--mobile .m-tabs {
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 900px) and (min-width: 769px) {
   .iphone-device__bezel {
     transform: scale(0.85);
     transform-origin: top center;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 480px) and (min-width: 769px) {
   .iphone-device__bezel { transform: scale(0.72); }
 }
 
