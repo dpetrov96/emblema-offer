@@ -1,295 +1,62 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { IconMenu } from "../demo/MobileIcons";
-import "../demo/Demo.css";
+import { createInitialAdminState, nextId, nowAuditTime } from "../demo/adminDemoState";
+import { ADMIN_NAV } from "../demo/mockData";
 import {
-  ADMIN_NAV,
-  ACCESS_ENTRIES,
-  AUDIT_LOG,
-  BUILDINGS,
-  EVENTS,
-  MESSAGES,
-  NEWS,
-  PARTNERS,
-  RADIO_CONFIG,
-  SPORT_VENUES,
-  USERS,
-  VEHICLES,
-} from "../demo/mockData";
+  AccessSection,
+  ApprovalsSection,
+  AuditSection,
+  BuildingsSection,
+  DashboardSection,
+  EventsSection,
+  ManagersSection,
+  MessagesSection,
+  NewsSection,
+  PartnersSection,
+  RadioSection,
+  SportSection,
+  UsersSection,
+  VehiclesSection,
+} from "../demo/AdminSections";
+import "../demo/Demo.css";
 
-function StatBox({ label, value, sub }) {
-  return (
-    <div className="demo-stat">
-      <span className="demo-stat__label">{label}</span>
-      <span className="demo-stat__value">{value}</span>
-      {sub && <span className="demo-stat__sub">{sub}</span>}
-    </div>
-  );
+function AdminToast({ message }) {
+  if (!message) return null;
+  return <div className="demo-toast" role="status">{message}</div>;
 }
 
-function MockTable({ columns, rows }) {
-  return (
-    <div className="demo-table-wrap">
-      <table className="demo-table">
-        <thead>
-          <tr>
-            {columns.map((c) => (
-              <th key={c.key}>{c.label}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.id ?? row[columns[0].key]}>
-              {columns.map((c) => (
-                <td key={c.key} data-label={c.label}>
-                  {c.render ? c.render(row) : row[c.key]}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
+function SectionContent({ section, role, state, setState, form, setForm, onNavigate, onAudit, onToast }) {
+  const shared = { state, setState, form, setForm, onAudit, onToast };
 
-function SectionContent({ section, role }) {
   switch (section) {
     case "dashboard":
-      return (
-        <>
-          <h2 className="demo-content__title">Табло · {role === "admin" ? "Central Admin" : "Manager"}</h2>
-          <div className="demo-stats-row">
-            <StatBox label="Жители" value="84" sub="Emblema Residence" />
-            <StatBox label="Чакащи одобрение" value="3" sub="регистрации" />
-            <StatBox label="Push днес" value="2" sub="изпратени" />
-            <StatBox label="Активен достъп" value="126" sub="записи" />
-          </div>
-          <div className="demo-panels">
-            <div className="demo-panel">
-              <h3>Последна активност</h3>
-              <ul className="demo-list">
-                {AUDIT_LOG.map((a) => (
-                  <li key={a.id}>
-                    <strong>{a.action}</strong> · {a.target}
-                    <span>{a.time}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="demo-panel">
-              <h3>Бързи действия</h3>
-              <div className="demo-actions">
-                <button type="button" className="demo-btn">+ Нов достъп</button>
-                <button type="button" className="demo-btn">✉ Съобщение</button>
-                <button type="button" className="demo-btn demo-btn--ghost">Одобри заявки (3)</button>
-              </div>
-            </div>
-          </div>
-        </>
-      );
+      return <DashboardSection {...shared} role={role} onNavigate={onNavigate} />;
     case "users":
-      return (
-        <>
-          <h2 className="demo-content__title">Жители</h2>
-          <MockTable
-            columns={[
-              { key: "name", label: "Име" },
-              { key: "email", label: "Email" },
-              { key: "apt", label: "Ап." },
-              { key: "status", label: "Статус", render: (r) => <span className={`demo-pill demo-pill--${r.status}`}>{r.status}</span> },
-            ]}
-            rows={USERS}
-          />
-        </>
-      );
+      return <UsersSection {...shared} />;
     case "approvals":
-      return (
-        <>
-          <h2 className="demo-content__title">Опашка за одобрение</h2>
-          <MockTable
-            columns={[
-              { key: "name", label: "Кандидат" },
-              { key: "email", label: "Email" },
-              { key: "apt", label: "Ап." },
-              { key: "actions", label: "", render: () => (
-                <div className="demo-inline-actions">
-                  <button type="button" className="demo-btn demo-btn--sm">Одобри</button>
-                  <button type="button" className="demo-btn demo-btn--sm demo-btn--ghost">Отхвърли</button>
-                </div>
-              ) },
-            ]}
-            rows={USERS.filter((u) => u.status === "pending")}
-          />
-        </>
-      );
+      return <ApprovalsSection {...shared} />;
     case "access":
-      return (
-        <>
-          <h2 className="demo-content__title">Управление на достъп</h2>
-          <MockTable
-            columns={[
-              { key: "user", label: "Потребител" },
-              { key: "type", label: "Тип" },
-              { key: "entrance", label: "Точка" },
-              { key: "valid", label: "Валидност" },
-            ]}
-            rows={ACCESS_ENTRIES}
-          />
-        </>
-      );
+      return <AccessSection {...shared} />;
     case "vehicles":
-      return (
-        <>
-          <h2 className="demo-content__title">Автомобилни номера</h2>
-          <MockTable
-            columns={[
-              { key: "plate", label: "Номер" },
-              { key: "owner", label: "Собственик" },
-              { key: "type", label: "Тип" },
-              { key: "status", label: "Статус", render: (r) => <span className={`demo-pill demo-pill--${r.status}`}>{r.status}</span> },
-            ]}
-            rows={VEHICLES}
-          />
-        </>
-      );
+      return <VehiclesSection {...shared} />;
     case "messages":
-      return (
-        <>
-          <h2 className="demo-content__title">Съобщения & Push</h2>
-          <div className="demo-form">
-            <label>Заглавие<input defaultValue="Важно съобщение" /></label>
-            <label>Аудитория<select defaultValue="building"><option>Цяла сграда</option><option>Вход A</option><option>Конкретен потребител</option></select></label>
-            <label>Текст<textarea rows={3} defaultValue="Mock съобщение за демо..." /></label>
-            <button type="button" className="demo-btn">Изпрати push + in-app</button>
-          </div>
-          <h3 className="demo-subtitle">История</h3>
-          <MockTable
-            columns={[
-              { key: "title", label: "Заглавие" },
-              { key: "audience", label: "До" },
-              { key: "sent", label: "Изпратено" },
-              { key: "read", label: "Прочетено" },
-            ]}
-            rows={MESSAGES}
-          />
-        </>
-      );
+      return <MessagesSection {...shared} />;
     case "audit":
-      return (
-        <>
-          <h2 className="demo-content__title">Audit log</h2>
-          <MockTable
-            columns={[
-              { key: "time", label: "Време" },
-              { key: "user", label: "Актор" },
-              { key: "action", label: "Действие" },
-              { key: "target", label: "Обект" },
-            ]}
-            rows={AUDIT_LOG}
-          />
-        </>
-      );
+      return <AuditSection {...shared} />;
     case "buildings":
-      return (
-        <>
-          <h2 className="demo-content__title">Сгради & структура</h2>
-          <MockTable
-            columns={[
-              { key: "name", label: "Сграда" },
-              { key: "address", label: "Адрес" },
-              { key: "units", label: "Ап." },
-              { key: "entrances", label: "Входове" },
-            ]}
-            rows={BUILDINGS}
-          />
-          <div className="demo-tree">
-            <h3>Структура · Emblema Residence</h3>
-            <ul>
-              <li>Вход A → Бариера, Домофон, Smart Home link</li>
-              <li>Вход B → Бариера, Паркинг -1</li>
-              <li>Гараж 2 → Smart Home link</li>
-            </ul>
-          </div>
-        </>
-      );
+      return <BuildingsSection {...shared} />;
     case "managers":
-      return (
-        <>
-          <h2 className="demo-content__title">Мениджъри ↔ Сгради</h2>
-          <MockTable
-            columns={[
-              { key: "manager", label: "Мениджър" },
-              { key: "building", label: "Сграда" },
-            ]}
-            rows={[
-              { id: 1, manager: "Стефан Илиев", building: "Emblema Residence" },
-              { id: 2, manager: "Дiana Koleva", building: "Emblema Garden" },
-            ]}
-          />
-        </>
-      );
+      return <ManagersSection {...shared} />;
     case "cms-news":
-      return (
-        <>
-          <h2 className="demo-content__title">CMS · Новини</h2>
-          <MockTable
-            columns={[
-              { key: "title", label: "Заглавие" },
-              { key: "category", label: "Категория" },
-              { key: "date", label: "Дата" },
-              { key: "published", label: "Статус", render: (r) => (r.published ? "Публикувана" : "Чернова") },
-            ]}
-            rows={NEWS}
-          />
-        </>
-      );
+      return <NewsSection {...shared} />;
     case "cms-events":
-      return (
-        <>
-          <h2 className="demo-content__title">CMS · Събития</h2>
-          <MockTable columns={[
-            { key: "title", label: "Събитие" },
-            { key: "date", label: "Дата" },
-            { key: "time", label: "Час" },
-            { key: "location", label: "Локация" },
-          ]} rows={EVENTS} />
-        </>
-      );
+      return <EventsSection {...shared} />;
     case "cms-partners":
-      return (
-        <>
-          <h2 className="demo-content__title">CMS · Лоялност</h2>
-          <MockTable columns={[
-            { key: "name", label: "Партньор" },
-            { key: "category", label: "Категория" },
-            { key: "discount", label: "Отстъпка" },
-          ]} rows={PARTNERS} />
-        </>
-      );
+      return <PartnersSection {...shared} />;
     case "cms-sport":
-      return (
-        <>
-          <h2 className="demo-content__title">CMS · Emblema Sport</h2>
-          <MockTable columns={[
-            { key: "name", label: "Обект" },
-            { key: "sport", label: "Спорт" },
-            { key: "phone", label: "Контакт" },
-          ]} rows={SPORT_VENUES} />
-        </>
-      );
+      return <SportSection {...shared} />;
     case "cms-radio":
-      return (
-        <>
-          <h2 className="demo-content__title">CMS · Emblema Radio</h2>
-          <div className="demo-panel demo-panel--radio">
-            <p><strong>{RADIO_CONFIG.name}</strong></p>
-            <p>Stream: {RADIO_CONFIG.stream}</p>
-            <p>Статус: {RADIO_CONFIG.status} · {RADIO_CONFIG.listeners} слушатели (mock)</p>
-            <button type="button" className="demo-btn">Запази конфигурация</button>
-          </div>
-        </>
-      );
+      return <RadioSection {...shared} />;
     default:
       return null;
   }
@@ -299,6 +66,9 @@ export default function AdminDemoPage() {
   const [role, setRole] = useState("manager");
   const [section, setSection] = useState("dashboard");
   const [navOpen, setNavOpen] = useState(false);
+  const [state, setState] = useState(createInitialAdminState);
+  const [form, setForm] = useState(null);
+  const [toast, setToast] = useState("");
 
   const nav = useMemo(
     () => ADMIN_NAV.filter((n) => n.roles.includes(role)),
@@ -307,19 +77,50 @@ export default function AdminDemoPage() {
 
   const sectionLabel = nav.find((n) => n.id === section)?.label ?? "Admin";
 
+  const onToast = useCallback((message) => {
+    setToast(message);
+    window.setTimeout(() => setToast(""), 2400);
+  }, []);
+
+  const onAudit = useCallback((action, target) => {
+    setState((s) => ({
+      ...s,
+      auditLog: [
+        { id: nextId(s.auditLog), action, user: role === "admin" ? "Admin" : "Manager", target, time: nowAuditTime() },
+        ...s.auditLog,
+      ],
+    }));
+  }, [role]);
+
   const selectSection = (id) => {
     setSection(id);
+    setForm(null);
     setNavOpen(false);
+  };
+
+  const onNavigate = (targetSection, mode) => {
+    setSection(targetSection);
+    setNavOpen(false);
+    if (mode === "add") {
+      setForm({ section: targetSection, mode: "add" });
+    } else if (mode === "compose") {
+      setForm({ section: targetSection, mode: "compose" });
+    } else {
+      setForm(null);
+    }
   };
 
   const switchRole = (nextRole) => {
     setRole(nextRole);
     setSection("dashboard");
+    setForm(null);
     setNavOpen(false);
   };
 
   return (
     <div className={`demo-page demo-page--admin demo-page--immersive${navOpen ? " demo-page--admin-nav-open" : ""}`}>
+      <AdminToast message={toast} />
+
       <header className="demo-admin-mobile-header">
         <button
           type="button"
@@ -372,7 +173,17 @@ export default function AdminDemoPage() {
           </div>
         </aside>
         <main className="demo-content">
-          <SectionContent section={section} role={role} />
+          <SectionContent
+            section={section}
+            role={role}
+            state={state}
+            setState={setState}
+            form={form}
+            setForm={setForm}
+            onNavigate={onNavigate}
+            onAudit={onAudit}
+            onToast={onToast}
+          />
         </main>
       </div>
     </div>

@@ -18,7 +18,6 @@ import {
   phaseBadge,
 } from "../data";
 import "../App.css";
-import "../demo/Demo.css";
 import { MockBrowserIcon, MockPhoneIcon } from "../demo/DemoLinkIcons";
 
 function GlowOrb({ color, style }) {
@@ -43,6 +42,7 @@ function SummaryPanel({
   clientMonthly,
   clientApple,
   clientGoogle,
+  showDemos = false,
 }) {
   return (
     <>
@@ -86,6 +86,37 @@ function SummaryPanel({
             </div>
           </div>
         </div>
+
+        {showDemos && (
+          <div className="summary-panel__demos">
+            <div className="summary-panel__demos-head">
+              <span className="summary-panel__demos-label">Интерактивно демо</span>
+              <span className="summary-panel__demos-note">Mock UI · без backend</span>
+            </div>
+            <div className="summary-demo-links">
+              <a href="/#/demo/admin" target="_blank" rel="noopener noreferrer" className="summary-demo-link">
+                <span className="summary-demo-link__icon">
+                  <MockBrowserIcon size={18} />
+                </span>
+                <span className="summary-demo-link__text">
+                  <strong>Admin Panel</strong>
+                  <small>Manager + Central Admin</small>
+                </span>
+                <span className="summary-demo-link__arrow" aria-hidden="true">→</span>
+              </a>
+              <a href="/#/demo/mobile" target="_blank" rel="noopener noreferrer" className="summary-demo-link">
+                <span className="summary-demo-link__icon">
+                  <MockPhoneIcon size={18} />
+                </span>
+                <span className="summary-demo-link__text">
+                  <strong>Mobile App</strong>
+                  <small>Welcome → app · iPhone 15 Pro</small>
+                </span>
+                <span className="summary-demo-link__arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        )}
       </div>
       <p className="summary-footnote">
         <span className="summary-footnote__dev">Dev цени и AI tokens - {VAT_LABEL}</span>
@@ -200,44 +231,8 @@ export default function OfferPage() {
             clientMonthly={clientMonthly}
             clientApple={clientApple}
             clientGoogle={clientGoogle}
+            showDemos
           />
-        </section>
-
-        <section className="section" id="demos">
-          <h2 className="section-title">Интерактивно демо</h2>
-          <p className="section-desc">
-            Mock UI прототип без backend - всички основни функционалности на Admin и Mobile app.
-          </p>
-          <div className="demo-links">
-            <a href="/#/demo/admin" target="_blank" rel="noopener noreferrer" className="demo-link-card glass-card">
-              <span className="demo-link-card__eyebrow">Web Admin</span>
-              <span className="demo-link-card__title">Demo Admin Panel</span>
-              <span className="demo-link-card__desc">
-                Manager + Central Admin · жители, достъп, CMS, audit log
-              </span>
-              <span className="demo-link-card__cta">
-                <span className="demo-link-card__cta-icon demo-link-card__cta-icon--browser">
-                  <MockBrowserIcon size={20} />
-                </span>
-                <span>Отвори admin</span>
-                <span className="demo-link-card__cta-arrow" aria-hidden="true">→</span>
-              </span>
-            </a>
-            <a href="/#/demo/mobile" target="_blank" rel="noopener noreferrer" className="demo-link-card glass-card">
-              <span className="demo-link-card__eyebrow">Mobile App</span>
-              <span className="demo-link-card__title">Demo Mobile App</span>
-              <span className="demo-link-card__desc">
-                Welcome → вход/регистрация → app · iPhone 15 Pro
-              </span>
-              <span className="demo-link-card__cta">
-                <span className="demo-link-card__cta-icon demo-link-card__cta-icon--phone">
-                  <MockPhoneIcon size={20} />
-                </span>
-                <span>Отвори app</span>
-                <span className="demo-link-card__cta-arrow" aria-hidden="true">→</span>
-              </span>
-            </a>
-          </div>
         </section>
 
         <section className="section" id="scope">
