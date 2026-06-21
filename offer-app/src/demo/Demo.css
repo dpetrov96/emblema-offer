@@ -108,6 +108,22 @@
 
 .demo-floating-back:hover { text-decoration: underline; }
 
+/* Back to offer — mobile only (desktop uses demo links from offer page) */
+.demo-back,
+.demo-floating-back {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .demo-back {
+    display: inline;
+  }
+
+  .demo-floating-back {
+    display: block;
+  }
+}
+
 .demo-mobile-stage {
   min-height: 100vh;
   display: flex;
