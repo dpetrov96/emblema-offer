@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { DemoBackLink } from "../demo/DemoShell";
+import { IconMenu } from "../demo/MobileIcons";
 import "../demo/Demo.css";
 import {
   ADMIN_NAV,
@@ -41,7 +41,7 @@ function MockTable({ columns, rows }) {
           {rows.map((row) => (
             <tr key={row.id ?? row[columns[0].key]}>
               {columns.map((c) => (
-                <td key={c.key}>
+                <td key={c.key} data-label={c.label}>
                   {c.render ? c.render(row) : row[c.key]}
                 </td>
               ))}
@@ -298,14 +298,53 @@ function SectionContent({ section, role }) {
 export default function AdminDemoPage() {
   const [role, setRole] = useState("manager");
   const [section, setSection] = useState("dashboard");
+  const [navOpen, setNavOpen] = useState(false);
 
   const nav = useMemo(
     () => ADMIN_NAV.filter((n) => n.roles.includes(role)),
     [role]
   );
 
+  const sectionLabel = nav.find((n) => n.id === section)?.label ?? "Admin";
+
+  const selectSection = (id) => {
+    setSection(id);
+    setNavOpen(false);
+  };
+
+  const switchRole = (nextRole) => {
+    setRole(nextRole);
+    setSection("dashboard");
+    setNavOpen(false);
+  };
+
   return (
-    <div className="demo-page demo-page--admin demo-page--immersive">
+    <div className={`demo-page demo-page--admin demo-page--immersive${navOpen ? " demo-page--admin-nav-open" : ""}`}>
+      <header className="demo-admin-mobile-header">
+        <button
+          type="button"
+          className="demo-admin-mobile-header__menu"
+          onClick={() => setNavOpen(true)}
+          aria-label="Отвори меню"
+        >
+          <IconMenu size={22} stroke={2} />
+        </button>
+        <div className="demo-admin-mobile-header__center">
+          <span className="demo-admin-mobile-header__title">{sectionLabel}</span>
+        </div>
+        <div className="demo-role-switch demo-role-switch--header">
+          <button type="button" className={role === "manager" ? "active" : ""} onClick={() => switchRole("manager")}>Mod</button>
+          <button type="button" className={role === "admin" ? "active" : ""} onClick={() => switchRole("admin")}>Admin</button>
+        </div>
+      </header>
+
+      <button
+        type="button"
+        className="demo-admin-drawer-backdrop"
+        aria-label="Затвори меню"
+        onClick={() => setNavOpen(false)}
+      />
+
       <div className="demo-admin-layout">
         <aside className="demo-sidebar">
           <div className="demo-sidebar__brand">
@@ -319,7 +358,7 @@ export default function AdminDemoPage() {
                 key={item.id}
                 type="button"
                 className={section === item.id ? "active" : ""}
-                onClick={() => setSection(item.id)}
+                onClick={() => selectSection(item.id)}
               >
                 {item.label}
               </button>
@@ -327,10 +366,9 @@ export default function AdminDemoPage() {
           </nav>
           <div className="demo-sidebar__footer">
             <div className="demo-role-switch demo-role-switch--sidebar">
-              <button type="button" className={role === "manager" ? "active" : ""} onClick={() => { setRole("manager"); setSection("dashboard"); }}>Manager</button>
-              <button type="button" className={role === "admin" ? "active" : ""} onClick={() => { setRole("admin"); setSection("dashboard"); }}>Admin</button>
+              <button type="button" className={role === "manager" ? "active" : ""} onClick={() => switchRole("manager")}>Manager</button>
+              <button type="button" className={role === "admin" ? "active" : ""} onClick={() => switchRole("admin")}>Admin</button>
             </div>
-            <DemoBackLink />
           </div>
         </aside>
         <main className="demo-content">

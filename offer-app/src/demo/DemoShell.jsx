@@ -17,15 +17,3 @@ export function IphoneFrame({ children }) {
     </div>
   );
 }
-
-export function DemoBackLink() {
-  return (
-    <a href="#/" className="demo-back">
-      ← Към офертата
-    </a>
-  );
-}
-
-export function DemoBadge() {
-  return <span className="demo-badge">Mock · без backend</span>;
-}

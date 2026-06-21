@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { DemoBackLink, IphoneFrame } from "../demo/DemoShell";
+import { IphoneFrame } from "../demo/DemoShell";
 import {
   IconBell,
   IconBuilding,
@@ -723,7 +723,6 @@ export default function MobileDemoPage() {
 
   return (
     <div className="demo-page demo-page--mobile demo-page--immersive">
-      <a href="#/" className="demo-floating-back">← Оферта</a>
       <div className="demo-mobile-stage">
         <IphoneFrame>
           <div className={`m-app ${isWelcome ? "m-app--welcome" : ""}`}>

@@ -209,7 +209,7 @@ export default function OfferPage() {
             Mock UI прототип без backend - всички основни функционалности на Admin и Mobile app.
           </p>
           <div className="demo-links">
-            <a href="#/demo/admin" className="demo-link-card glass-card">
+            <a href="/#/demo/admin" target="_blank" rel="noopener noreferrer" className="demo-link-card glass-card">
               <span className="demo-link-card__eyebrow">Web Admin</span>
               <span className="demo-link-card__title">Demo Admin Panel</span>
               <span className="demo-link-card__desc">
@@ -223,7 +223,7 @@ export default function OfferPage() {
                 <span className="demo-link-card__cta-arrow" aria-hidden="true">→</span>
               </span>
             </a>
-            <a href="#/demo/mobile" className="demo-link-card glass-card">
+            <a href="/#/demo/mobile" target="_blank" rel="noopener noreferrer" className="demo-link-card glass-card">
               <span className="demo-link-card__eyebrow">Mobile App</span>
               <span className="demo-link-card__title">Demo Mobile App</span>
               <span className="demo-link-card__desc">
