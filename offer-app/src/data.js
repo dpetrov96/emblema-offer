@@ -1,4 +1,5 @@
-export const RATE = 50;
+export const DEV_GRAND_TOTAL = 29500;
+export const RATE = 65;
 export const TIMELINE = "2 месеца";
 
 export function phaseBadge(id) {
@@ -146,6 +147,29 @@ export const TOKEN_ITEMS = [
 export const TOKEN_NOTE =
   "Ориентировъчна оценка за AI consumption по време на разработката.";
 
+function distributeIntegerPrices(tasks, targetSum) {
+  const totalHours = tasks.reduce((sum, task) => sum + task.hours, 0);
+  const items = tasks.map((task) => {
+    const exact = (task.hours / totalHours) * targetSum;
+    return { id: task.id, price: Math.floor(exact), frac: exact - Math.floor(exact) };
+  });
+  let remainder = targetSum - items.reduce((sum, item) => sum + item.price, 0);
+  items.sort((a, b) => b.frac - a.frac);
+  for (let i = 0; i < remainder; i += 1) {
+    items[i].price += 1;
+  }
+  return Object.fromEntries(items.map((item) => [item.id, item.price]));
+}
+
+const ALL_TASKS = PHASES.flatMap((phase) => phase.tasks);
+const TOKEN_TOTAL = TOKEN_ITEMS.reduce((sum, item) => sum + item.euro, 0);
+const DEV_PRICE_TARGET = DEV_GRAND_TOTAL - TOKEN_TOTAL;
+const TASK_PRICES = distributeIntegerPrices(ALL_TASKS, DEV_PRICE_TARGET);
+
+export function getTaskPrice(taskId) {
+  return TASK_PRICES[taskId] ?? 0;
+}
+
 /** Разходи за сметка на клиента */
 export const CLIENT_COST_ITEMS = [
   {
@@ -245,7 +269,7 @@ export const VAT_LABEL = "без ДДС";
 export function fmtPrice(amount, opts = {}) {
   const { approx = true, suffix = "" } = opts;
   const prefix = approx ? "~" : "";
-  return `${prefix}${formatNum(amount)} €${suffix}`;
+  return `${prefix}${formatNum(Math.round(amount))} €${suffix}`;
 }
 
 export function calcTotals() {
@@ -254,9 +278,10 @@ export function calcTotals() {
 
   const phaseTotals = PHASES.map((phase) => {
     const ph = phase.tasks.reduce((s, t) => s + t.hours, 0);
+    const price = phase.tasks.reduce((s, t) => s + getTaskPrice(t.id), 0);
     devHours += ph;
-    devPrice += ph * RATE;
-    return { ...phase, badge: phaseBadge(phase.id), hours: ph, price: ph * RATE };
+    devPrice += price;
+    return { ...phase, badge: phaseBadge(phase.id), hours: ph, price };
   });
 
   const tokenPrice = TOKEN_ITEMS.reduce((s, t) => s + t.euro, 0);

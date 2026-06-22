@@ -8,13 +8,13 @@ import {
   INCLUDED,
   EXCLUDED,
   TECH_STACK,
-  RATE,
   TIMELINE,
   VAT_LABEL,
   formatNum,
   fmtPrice,
   calcTotals,
   getMaxPhaseHours,
+  getTaskPrice,
   phaseBadge,
 } from "../data";
 import "../App.css";
@@ -129,7 +129,7 @@ function SummaryPanel({
 
 function PhaseCard({ phase }) {
   const phaseHours = phase.tasks.reduce((s, t) => s + t.hours, 0);
-  const phasePrice = phaseHours * RATE;
+  const phasePrice = phase.tasks.reduce((s, t) => s + getTaskPrice(t.id), 0);
 
   return (
     <section className="phase-card glass-card" id={`phase-${phase.id}`}>
@@ -151,7 +151,7 @@ function PhaseCard({ phase }) {
             <span className="task-id">{task.id}</span>
             <span className="task-name">{task.name}</span>
             <span className="task-hours">{task.hours} ч.</span>
-            <span className="task-price">{fmtPrice(task.hours * RATE)}</span>
+            <span className="task-price">{fmtPrice(getTaskPrice(task.id))}</span>
           </div>
         ))}
       </div>
